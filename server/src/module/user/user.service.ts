@@ -41,6 +41,8 @@ const AuthService = {
             role: user.role,
         });
 
+        const { password: _, ...safeUser } = user;
+
         return {
             user,
             token
@@ -53,11 +55,44 @@ const AuthService = {
         const user = await prisma.user.findUnique({ where: { email } });
         if (!user) throwError("Invalid credentials", httpStatus.UNAUTHORIZED);
 
-        const isMatch = await bcrypt.compare(password, dto.password);
+        const isMatch = await bcrypt.compare(password, user!.password);
         if (!isMatch) throwError("Invalid credentials", httpStatus.UNAUTHORIZED);
 
-        const token = JWTService.sign({ id: user.id, role: user.role });
+        const token = JWTService.sign({
+            id: user!.id,
+            role: user!.role,
+        });
+
+
         return { user, token };
 
-    }
+    },
+
+   allUsers: async (currentUserId: string, search?: string) => {
+    const users = await prisma.user.findMany({
+        where: {
+            id: { not: currentUserId },
+            ...(search && {
+                OR: [
+                    {
+                        fullName: {
+                            contains: search,
+                            mode: "insensitive",
+                        },
+                    },
+                    {
+                        email: {
+                            contains: search,
+                            mode: "insensitive",
+                        },
+                    },
+                ],
+            }),
+        },
+    });
+
+    return users;
 }
+}
+
+export default AuthService;
