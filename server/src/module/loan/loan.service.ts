@@ -3,7 +3,6 @@ import { CreateLoanDto, UpdateLoanStatusDto, ProcessLoanDto } from "../../dto/lo
 import { LoanStatus, RepaymentStatus } from "@prisma/client";
 import throwError from "../../utils/error";
 import httpStatus from "http-status";
-import { tr } from "zod/v4/locales";
 
 
 export const LoanService = {

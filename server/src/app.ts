@@ -30,6 +30,7 @@ app.get('/', (req: Request, res: Response) => {
 })
 
 app.use('/api', authRoutes)
+app.use('/api/loans', authRoutes)
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   const error: IError = new Error(

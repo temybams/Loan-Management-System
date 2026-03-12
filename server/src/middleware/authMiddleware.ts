@@ -1,8 +1,9 @@
-import {Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 // import { AuthRequest } from "../types/request.types";
 import JWTService from "../services/jwtServices";
 import throwError from "../utils/error";
 import httpStatus from "http-status";
+import { JwtPayload } from "../types/jwt.types";
 
 export const authenticate = (
     req: Request,
@@ -18,13 +19,16 @@ export const authenticate = (
             throwError("Unauthorized - No token provided", httpStatus.UNAUTHORIZED);
         }
 
-        const decoded = JWTService.verify(token);
+        const decoded = JWTService.verify(token) as JwtPayload;
 
         if (!decoded) {
             return throwError('Unauthorized', httpStatus.UNAUTHORIZED);
         }
 
-        req.user = decoded;
+        req.user = {
+            id: decoded.id,
+            role: decoded.role,
+        }; 
 
         next();
     } catch (error) {

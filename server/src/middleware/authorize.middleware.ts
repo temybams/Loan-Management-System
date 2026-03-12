@@ -1,5 +1,5 @@
 import { Role } from "@prisma/client";
-import { NextFunction, Response } from "express";
+import { Request, Response, NextFunction} from "express";
 
 import throwError from "../utils/error";
 import httpStatus from "http-status";
