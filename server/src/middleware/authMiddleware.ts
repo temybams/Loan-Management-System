@@ -1,11 +1,11 @@
-import { Response, NextFunction } from "express";
-import { AuthRequest } from "../types/request.types";
+import {Request, Response, NextFunction } from "express";
+// import { AuthRequest } from "../types/request.types";
 import JWTService from "../services/jwtServices";
 import throwError from "../utils/error";
 import httpStatus from "http-status";
 
 export const authenticate = (
-    req: AuthRequest,
+    req: Request,
     res: Response,
     next: NextFunction
 ) => {

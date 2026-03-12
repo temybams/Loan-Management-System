@@ -10,8 +10,7 @@ const AuthService = {
     signup: async (dto: SignupDto) => {
         const { username, email, password, fullName, dateOfBirth, phoneNumber, street, city, state, postalCode, country } = dto
 
-        const existingUser = await prisma.user.findUnique({
-            where: { email },
+        const existingUser = await prisma.user.findUnique({ where: { email }
         });
 
         if (existingUser) {
@@ -66,33 +65,8 @@ const AuthService = {
 
         return { user, token };
 
-    },
+    }
 
-   allUsers: async (currentUserId: string, search?: string) => {
-    const users = await prisma.user.findMany({
-        where: {
-            id: { not: currentUserId },
-            ...(search && {
-                OR: [
-                    {
-                        fullName: {
-                            contains: search,
-                            mode: "insensitive",
-                        },
-                    },
-                    {
-                        email: {
-                            contains: search,
-                            mode: "insensitive",
-                        },
-                    },
-                ],
-            }),
-        },
-    });
-
-    return users;
-}
 }
 
 export default AuthService;

@@ -2,10 +2,9 @@ import express, { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { IError } from './types/error.type';
-import { } from "@prisma/client";
 import { connectPrisma } from './services/prisma.service';
 import errorHandler from './middleware/errorHandler.middleware';
-
+import authRoutes from './routes/index';
 
 dotenv.config();
 
@@ -30,9 +29,8 @@ app.get('/', (req: Request, res: Response) => {
   })
 })
 
+app.use('/api', authRoutes)
 
-
-// app.use('/api', router);
 app.use((req: Request, res: Response, next: NextFunction) => {
   const error: IError = new Error(
     `API Endpoint Not found - ${req.originalUrl}`,

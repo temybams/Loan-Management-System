@@ -9,6 +9,7 @@ import { authenticate } from '../../middleware/authMiddleware';
 
 router.post('/signup', validationMiddleware(SignupSchema), authController.signup);
 router.post('/login', validationMiddleware(LoginSchema), authController.login);
+router.post("/logout", authenticate, authController.logout);
 // router.get('/all-users',authenticate, authorize([Role.ADMIN]), authController.allUsers);
 
 export default router;
