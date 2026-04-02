@@ -2,15 +2,17 @@ import express, { Application, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { IError } from './types/error.type';
-import { connectPrisma } from './services/prisma.service';
 import errorHandler from './middleware/errorHandler.middleware';
-import authRoutes from './routes/index';
+import { authRoutes, loanRoutes } from './routes/index';
+
+import { createBullBoard } from "@bull-board/api";
+import { BullMQAdapter } from "@bull-board/api/bullMQAdapter";
+import { ExpressAdapter } from "@bull-board/express";
+import { notificationQueue } from "./queues/notification.queue";
 
 dotenv.config();
 
 const app: Application = express();
-
-const PORT = process.env.PORT;
 
 app.use(
   cors({
@@ -29,8 +31,18 @@ app.get('/', (req: Request, res: Response) => {
   })
 })
 
+const serverAdapter = new ExpressAdapter();
+serverAdapter.setBasePath("/admin/queues");
+
+createBullBoard({
+  queues: [new BullMQAdapter(notificationQueue)],
+  serverAdapter,
+});
+
+app.use("/admin/queues", serverAdapter.getRouter());
+
 app.use('/api', authRoutes)
-app.use('/api/loans', authRoutes)
+app.use('/api', loanRoutes)
 
 app.use((req: Request, res: Response, next: NextFunction) => {
   const error: IError = new Error(
@@ -45,11 +57,4 @@ app.use((err: IError, req: Request, res: Response, next: NextFunction) => {
   errorHandler(err, req, res, next);
 });
 
-
-app.listen(PORT, async () => {
-  await connectPrisma().then(() => {
-    console.clear();
-    console.log(`Server running on port ${PORT}`);
-  });
-});
 export default app;

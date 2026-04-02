@@ -37,7 +37,7 @@ const LoanController = {
     }),
 
     processRepayment: catchAsync(async (req: Request, res: Response) => {
-         const userId = req.user!.id;
+        const userId = req.user!.id;
         const dto: ProcessLoanDto = req.body;
 
         const result = await LoanService.processRepayment(userId, dto);
@@ -50,13 +50,13 @@ const LoanController = {
 
     updateLoanStatus: catchAsync(async (req: Request, res: Response) => {
         const { loanId } = req.params as { loanId: string };
-        const dto: UpdateLoanStatusDto = req.body;
-        const loan = await LoanService.updateLoanStatus(loanId, dto);
+        
+        const result = await LoanService.updateLoanStatus(loanId, req.body);
+
         res.status(200).json({
             success: true,
-            message: "Loan status updated successfully",
-            data: loan,
-        })
+            data: result,
+        });
     }),
 
     getAllLoans: catchAsync(async (req: Request, res: Response) => {
@@ -71,12 +71,23 @@ const LoanController = {
     getloanSchedules: catchAsync(async (req: Request, res: Response) => {
         const userId = req.user!.id;
         const { loanId } = req.params as { loanId: string };
-        
-        const schedules = await LoanService.getLoanSchedules(userId, loanId);
+
+        const schedules = await LoanService.getLoanSchedules(loanId, userId);
         res.status(200).json({
             success: true,
             message: "Repayment schedules retrieved successfully",
             data: schedules,
+        })
+    }),
+
+    getLoanSummary: catchAsync(async (req: Request, res: Response) => {
+        const userId = req.user!.id;
+        const { loanId } = req.params as { loanId: string };
+        const summary = await LoanService.getLoanSummary(userId!, loanId);
+        res.status(200).json({
+            success: true,
+            message: "Loan summary retrieved successfully",
+            data: summary,
         })
     }),
 }

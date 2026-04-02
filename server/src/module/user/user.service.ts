@@ -8,15 +8,22 @@ import throwError from '../../utils/error'
 
 const AuthService = {
     signup: async (dto: SignupDto) => {
-        const { username, email, password, fullName, dateOfBirth, phoneNumber, street, city, state, postalCode, country } = dto
+        const { username, email, password, fullName, dateOfBirth, phoneNumber, street, city, state, postalCode, country, role } = dto
 
-        const existingUser = await prisma.user.findUnique({ where: { email }
+        const existingUser = await prisma.user.findUnique({
+            where: { email }
         });
 
         if (existingUser) {
             throw throwError('User already exists', httpStatus.CONFLICT)
         }
         const hashedPassword = await bcrypt.hash(password, 10);
+        let assignedRole: Role = Role.BORROWER;
+
+
+        if (role === "ADMIN") {
+            throwError("Unauthorized to create admin", httpStatus.FORBIDDEN);
+        }
 
         const user = await prisma.user.create({
             data: {
@@ -35,16 +42,11 @@ const AuthService = {
             },
         });
 
-        const token = JWTService.sign({
-            id: user.id,
-            role: user.role,
-        });
 
         const { password: _, ...safeUser } = user;
 
         return {
-            user,
-            token
+            user
         };
     },
 

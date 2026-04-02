@@ -3,7 +3,6 @@ import { LoanStatus } from "@prisma/client";
 
 export const CreateloanSchema = z.object({
   amount: z.number().positive(),
-  interestRate: z.number().positive(),
   tenureMonths: z.number().int().positive(),
 });
 

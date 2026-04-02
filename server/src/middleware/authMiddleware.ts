@@ -15,9 +15,10 @@ export const authenticate = (
         let type: string | undefined;
         [type, token] = req.headers.authorization?.split(' ') ?? [];
 
-        if (!type || !token.startsWith("Bearer ")) {
+        if (type !== 'Bearer' || !token) {
             throwError("Unauthorized - No token provided", httpStatus.UNAUTHORIZED);
         }
+
 
         const decoded = JWTService.verify(token) as JwtPayload;
 
@@ -28,7 +29,8 @@ export const authenticate = (
         req.user = {
             id: decoded.id,
             role: decoded.role,
-        }; 
+        };
+
 
         next();
     } catch (error) {

@@ -5,6 +5,7 @@ import loanRoutes from '../module/loan/loan.route';
 const authRoutes = express.Router();
 
 authRoutes.use('/users', userRoutes);
-authRoutes.use('/loans', loanRoutes);
+authRoutes.use('/loan', loanRoutes);
 
-export default authRoutes;
+
+export  {authRoutes, loanRoutes};

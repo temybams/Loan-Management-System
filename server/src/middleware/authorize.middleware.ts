@@ -1,5 +1,5 @@
 import { Role } from "@prisma/client";
-import { Request, Response, NextFunction} from "express";
+import { Request, Response, NextFunction } from "express";
 
 import throwError from "../utils/error";
 import httpStatus from "http-status";
@@ -10,7 +10,7 @@ export const authorize = (roles: Role[] = []) => {
             throwError("Unauthorized", httpStatus.UNAUTHORIZED);
         }
 
-        if (!roles.includes(req.user!.role)) {
+        if (roles.length && !roles.includes(req.user!.role)) {
             throwError("Forbidden - Insufficient permissions", httpStatus.FORBIDDEN);
         }
 

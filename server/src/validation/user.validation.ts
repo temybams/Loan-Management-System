@@ -1,3 +1,4 @@
+import { Role } from "@prisma/client";
 import { z } from "zod";;
 
 
@@ -33,13 +34,15 @@ export const SignupSchema = z.object({
         .string()
         .min(7, "Phone number is too short")
         .max(15, "Phone number is too long")
-        .regex(/^[0-9+]+$/, "Invalid phone number format"),
+        .regex(/^\+234\d{10}$/, "Phone number must be in format +234XXXXXXXXXX"),
 
     street: z.string().trim().optional(),
     city: z.string().trim().optional(),
     state: z.string().trim().optional(),
     postalCode: z.string().trim().optional(),
     country: z.string().trim().optional(),
+    role: z.enum(["BORROWER", "ADMIN"]).optional(),
+
 });
 
 export const LoginSchema = z.object({
