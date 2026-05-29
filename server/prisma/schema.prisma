@@ -68,6 +68,7 @@ model RepaymentSchedule {
   loan     Loan @relation(fields: [loanId], references: [id], onDelete: Cascade) 
   dueDate  DateTime
   amount   Float
+  paidAmount Float  @default(0)
   status   RepaymentStatus @default(PENDING)
   createdAt DateTime         @default(now())
 

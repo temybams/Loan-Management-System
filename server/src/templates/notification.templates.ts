@@ -14,7 +14,7 @@ export const NotificationTemplates = {
     sms: `Hi ${name}, your loan of ${formatCurrency(amount)} has been created.`,
   }),
 
-  REPAYMENT_SUCCESS: (name: string, amount: number, balance: number) => {
+  PAYMENT_RECEIVED: (name: string, amount: number, balance: number) => {
     const formatCurrency = (amt: number) =>
       new Intl.NumberFormat("en-NG", {
         style: "currency",
@@ -32,6 +32,12 @@ export const NotificationTemplates = {
     };
   },
 
+  LOAN_APPROVED: (name: string, status: string) => ({
+    subject: "Loan Status Update 🔔",
+    email: `<p>Hello ${name},</p>
+            <p>Your loan status has been updated to: <strong>${status}</strong>.</p>`,
+    sms: `Hi ${name}, your loan status is now: ${status}.`,
+  }),
 
 
   OVERDUE_ALERT: (name: string, formattedAmount: number) => ({

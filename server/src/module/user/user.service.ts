@@ -16,14 +16,16 @@ const AuthService = {
 
         if (existingUser) {
             throw throwError('User already exists', httpStatus.CONFLICT)
-        }
-        const hashedPassword = await bcrypt.hash(password, 10);
-        let assignedRole: Role = Role.BORROWER;
+        };
 
+        // prevent admin creation
 
         if (role === "ADMIN") {
-            throwError("Unauthorized to create admin", httpStatus.FORBIDDEN);
+            throw throwError('Unauthorized to create admin', httpStatus.FORBIDDEN)
         }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        let assignedRole: Role = Role.BORROWER;
 
         const user = await prisma.user.create({
             data: {
@@ -43,10 +45,10 @@ const AuthService = {
         });
 
 
-        const { password: _, ...safeUser } = user;
+        const { password: _password, ...safeUser } = user;
 
         return {
-            user
+            user: safeUser,
         };
     },
 

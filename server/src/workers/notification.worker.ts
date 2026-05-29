@@ -4,6 +4,7 @@ import { EmailService } from "../services/emailService";
 import { SmsService } from "../services/smsService";
 import { prisma } from "../services/prisma.service";
 import { NotificationTemplates } from "../templates/notification.templates";
+import { NotificationStatus } from "@prisma/client";
 
 
 new Worker(
@@ -25,11 +26,18 @@ new Worker(
           );
           break;
 
-        case "REPAYMENT_SUCCESS":
-          template = NotificationTemplates.REPAYMENT_SUCCESS(
+        case "PAYMENT_RECEIVED":
+          template = NotificationTemplates.PAYMENT_RECEIVED(
             user.name,
             data.amount,
             data.balance
+          );
+          break;
+
+        case "LOAN_APPROVED":
+          template = NotificationTemplates.LOAN_APPROVED(
+            user.name,
+            data.status ?? "APPROVED"
           );
           break;
 
@@ -48,13 +56,13 @@ new Worker(
 
 
       // ✅ SEND NOTIFICATIONS
-      let emailStatus = "FAILED";
-      let smsStatus = "FAILED";
+      let emailStatus: NotificationStatus = NotificationStatus.FAILED;
+      let smsStatus: NotificationStatus = NotificationStatus.FAILED;
 
 
       try {
         await EmailService.sendEmail(user.email, subject, email);
-        emailStatus = "SENT";
+        emailStatus = NotificationStatus.SENT;
       } catch (err) {
         console.error("Email failed:", err);
       }
@@ -74,7 +82,7 @@ new Worker(
             title: subject,
             message: email,
             channel: "EMAIL",
-            status: "SENT",
+            status: emailStatus,
             sentAt: emailStatus === "SENT" ? new Date() : null,
           },
           // {

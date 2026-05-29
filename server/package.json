@@ -11,6 +11,7 @@
     "bcryptjs": "^3.0.3",
     "bullmq": "^5.71.0",
     "express": "^5.2.1",
+    "express-rate-limit": "^8.3.2",
     "http-status": "^2.1.0",
     "ioredis": "^5.10.0",
     "jsonwebtoken": "^9.0.3",
@@ -21,10 +22,13 @@
   },
   "scripts": {
     "start": "node dist/server.js",
-    "build": "tsc",
+    "build": "npx prisma generate && tsc",
     "dev": "nodemon --exec ts-node --files src/server.ts",
     "db:push": "npx prisma db push",
-    "worker": "ts-node src/workers/notification.worker.ts"
+    "db:seed": "npx prisma db seed",
+    "db:deploy": "npx prisma migrate deploy",
+    "worker": "ts-node src/workers/notification.worker.ts",
+    "worker:prod": "node dist/workers/notification.worker.js"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"

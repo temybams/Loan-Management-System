@@ -1,3 +1,5 @@
+import { LoanStatus } from "@prisma/client";
+
 export const calculateLoanDetails = (loan: any) => {
   const interest = (loan.amount * loan.interestRate) / 100;
   const totalLoanAmount = loan.amount + interest;
@@ -17,6 +19,6 @@ export const calculateLoanDetails = (loan: any) => {
 export const calculateOutstanding = (loans: any[]) => {
   return loans.reduce((sum, loan) => {
     const { remainingBalance } = calculateLoanDetails(loan);
-    return loan.status !== "PAID" ? sum + remainingBalance : sum;
+    return loan.status !== LoanStatus.PAID ? sum + remainingBalance : sum;
   }, 0);
 };
