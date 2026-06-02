@@ -19,7 +19,13 @@
   --shadow-sm: 0 1px 2px rgba(17, 24, 22, 0.06);
   --shadow-md: 0 16px 40px rgba(17, 24, 22, 0.08);
   --radius: 8px;
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
   color: var(--ink);
   background: var(--bg);
 }
@@ -84,8 +90,16 @@ button {
   overflow: hidden;
   padding: clamp(26px, 5vw, 56px);
   background:
-    radial-gradient(circle at 78% 22%, rgba(214, 255, 114, 0.22), transparent 26%),
-    radial-gradient(circle at 12% 74%, rgba(255, 255, 255, 0.14), transparent 30%),
+    radial-gradient(
+      circle at 78% 22%,
+      rgba(214, 255, 114, 0.22),
+      transparent 26%
+    ),
+    radial-gradient(
+      circle at 12% 74%,
+      rgba(255, 255, 255, 0.14),
+      transparent 30%
+    ),
     linear-gradient(135deg, #073d35 0%, #0a5f4d 46%, #09241f 100%);
   color: #ffffff;
 }
@@ -308,7 +322,7 @@ button {
   margin: 0 0 10px;
   color: var(--brand);
   font-size: 0.76rem;
-  font-weight: 800;
+  font-weight: 500;
   letter-spacing: 0;
   text-transform: uppercase;
 }
@@ -371,7 +385,7 @@ button {
 .auth-panel-heading p:not(.eyebrow) {
   margin: 0;
   color: var(--muted);
-  font-weight: 600;
+  font-weight: 100;
 }
 
 .auth-highlights span {
@@ -485,7 +499,10 @@ select:focus {
   border-radius: var(--radius);
   padding: 11px 15px;
   font-weight: 800;
-  transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background 160ms ease;
 }
 
 .button:hover {
@@ -493,9 +510,12 @@ select:focus {
 }
 
 .button.primary {
-  background: var(--brand);
+  background: rgba(255, 255, 255, 0.1);
   color: #ffffff;
   box-shadow: 0 10px 24px rgba(8, 115, 95, 0.22);
+}
+.button.primary:hover {
+  border-color: var(--line-strong);
 }
 
 .button.secondary {
@@ -532,7 +552,7 @@ select:focus {
   flex-direction: column;
   gap: 28px;
   border-right: 1px solid var(--line);
-  background: #ffffff;
+  background: #0000;
   padding: 22px;
 }
 
@@ -740,7 +760,9 @@ select:focus {
   background: var(--panel-soft);
   padding: 13px;
   text-align: left;
-  transition: border-color 160ms ease, background 160ms ease;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease;
 }
 
 .loan-row.active,
@@ -1099,10 +1121,18 @@ select:focus {
 }
 
 .landing-page {
-  overflow: hidden;
+  overflow-x: hidden;
   background:
-    radial-gradient(circle at 78% 16%, rgba(214, 255, 114, 0.2), transparent 26%),
-    radial-gradient(circle at 8% 38%, rgba(255, 255, 255, 0.12), transparent 28%),
+    radial-gradient(
+      circle at 78% 16%,
+      rgba(214, 255, 114, 0.2),
+      transparent 26%
+    ),
+    radial-gradient(
+      circle at 8% 38%,
+      rgba(255, 255, 255, 0.12),
+      transparent 28%
+    ),
     linear-gradient(135deg, #073d35 0%, #0a5f4d 46%, #09241f 100%);
   color: #ffffff;
 }
@@ -1116,18 +1146,28 @@ select:focus {
 }
 
 .public-nav {
-  position: relative;
-  z-index: 4;
+  position: fixed;
+  top: 0;
+  z-index: 20;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 22px;
-  width: min(1180px, calc(100% - 40px));
-  margin: 0 auto;
-  padding: 20px 0;
+  width: 100%;
+  /* margin: 0 auto; */
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-top: 0;
+  /* border-radius: 0 0 var(--radius) var(--radius); */
+  background: rgba(7, 61, 53, 0.9);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
+  padding: 14px 16px;
+  backdrop-filter: blur(18px);
+ 
 }
 
 .public-nav.auth-nav {
+  border-color: var(--line);
+  background: rgba(255, 255, 255, 0.9);
   color: var(--ink);
 }
 
@@ -1182,8 +1222,8 @@ select:focus {
 .landing-hero h1 {
   max-width: 760px;
   margin: 0 0 22px;
-  font-size: clamp(2.5rem, 5.8vw, 5.35rem);
-  line-height: 0.94;
+  font-size: clamp(2.15rem, 4.3vw, 4.1rem);
+  line-height: 1.02;
   letter-spacing: 0;
 }
 
@@ -1201,9 +1241,12 @@ select:focus {
 }
 
 .button.ghost {
-  border-color: var(--line-strong);
   background: rgba(255, 255, 255, 0.1);
   color: inherit;
+}
+
+.button.ghost:hover {
+  border-color: var(--line-strong);
 }
 
 .auth-panel.centered {
@@ -1326,7 +1369,7 @@ select:focus {
   }
 
   .landing-hero h1 {
-    font-size: 2.35rem;
+    font-size: 2rem;
   }
 
   .landing-page .trust-strip {
